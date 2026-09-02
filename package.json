@@ -2,6 +2,7 @@
   "name": "project-watchtower",
   "version": "1.0.0",
   "description": "AI-Powered Multi-Project Monitoring Platform — Local engine, no external APIs",
+  "type": "module",
   "private": true,
   "scripts": {
     "dev": "vite",

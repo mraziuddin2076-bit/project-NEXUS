@@ -307,7 +307,7 @@ function detectDelays(project, projectTasks, taskProgress, simulation) {
     reasons.push(`${blockedTasks.length} task(s) blocked by incomplete dependencies`);
   }
 
-  const isDelayed = simulation.p80 && simulation.p80 > deadline;
+  const isDelayed = (simulation.p80 && simulation.p80 > deadline) || project.status === "delayed";
 
   return { isDelayed, reasons: reasons.slice(0, 4) }; // Top 4 reasons
 }
