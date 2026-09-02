@@ -7,75 +7,65 @@
     scroll-behavior: smooth;
   }
   body {
-    @apply bg-[#030712] text-[#e2e8f0] antialiased;
+    @apply bg-[#0a0a12] text-[#e2e8f0] antialiased font-sans;
     background-image:
       radial-gradient(circle at 1px 1px, #1e293b 1px, transparent 0),
       radial-gradient(circle at 1px 1px, #1e293b 1px, transparent 0);
     background-size: 40px 40px;
     background-position: 0 0, 20px 20px;
+    min-height: 100vh;
   }
   * {
     scroll-behavior: smooth;
   }
 }
 
-/* Glassmorphism containers */
+/* ─── Modern Glassmorphism ─── */
 .glass {
-  background: rgba(15, 23, 42, 0.45);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-  border: 1px solid rgba(255, 255, 255, 0.05);
+  background: rgba(15, 23, 42, 0.5);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(255, 255, 255, 0.08);
   box-shadow:
-    0 4px 6px -1px rgba(0, 0, 0, 0.1),
-    0 2px 4px -2px rgba(0, 0, 0, 0.06),
-    inset 0 1px 0 0 rgba(255, 255, 255, 0.03);
+    0 8px 32px 0 rgba(0, 0, 0, 0.3),
+    inset 0 1px 0 0 rgba(255, 255, 255, 0.05);
 }
 
-/* Gradient text */
+/* ─── Gradient Text Utility ─── */
 .gradient-text {
   @apply bg-clip-text text-transparent bg-gradient-to-r from-indigo-400 via-violet-400 to-blue-400;
 }
 
-/* Card hover effect */
+/* ─── Card Hover ─── */
 .card-hover {
   @apply transition-all duration-300 ease-out;
 }
 .card-hover:hover {
-  transform: translateY(-2px);
+  transform: translateY(-4px);
   box-shadow:
-    0 10px 25px -5px rgba(0, 0, 0, 0.3),
+    0 20px 25px -5px rgba(0, 0, 0, 0.3),
     0 4px 6px -2px rgba(0, 0, 0, 0.1),
-    0 0 0 1px rgba(99, 102, 241, 0.2);
+    0 0 0 1px rgba(139, 92, 246, 0.2);
 }
 
-/* Pulse for alerts */
-@keyframes pulse-slow {
-  0%, 100% { opacity: 1; }
-  50% { opacity: 0.7; }
-}
-.animate-pulse-slow {
-  animation: pulse-slow 3s ease-in-out infinite;
-}
-
-/* Outer spin for brand mark */
-@keyframes spin-slow-outer {
-  from { transform: rotate(0deg); }
-  to { transform: rotate(360deg); }
-}
-.animate-spin-slow {
-  animation: spin-slow-outer 8s linear infinite;
-}
-.animate-spin-slow {
-  animation: spin-slow-outer 8s linear infinite;
-  border-right-color: transparent;
-}
-
-/* Status badge consistency */
+/* ─── Status Badge ─── */
 .status-badge {
   @apply inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-medium;
 }
 
-/* Custom scrollbar */
+/* ─── Project Status Colors ─── */
+.status-running { background: rgba(74, 222, 128, 0.15); color: #4ade80; }
+.status-queued { background: rgba(251, 191, 36, 0.15); color: #fbbf24; }
+.status-completed { background: rgba(96, 165, 250, 0.15); color: #60a5fa; }
+.status-delayed { background: rgba(248, 113, 113, 0.15); color: #f87171; }
+.status-onhold { background: rgba(139, 92, 246, 0.15); color: #8b5cf6; }
+
+/* ─── Health Colors ─── */
+.health-healthy { color: #4ade80; }
+.health-atrisk { color: #fbbf24; }
+.health-critical { color: #f87171; }
+
+/* ─── Custom Scrollbar ─── */
 ::-webkit-scrollbar {
   width: 8px;
   height: 8px;
@@ -91,20 +81,68 @@
   background: #475569;
 }
 
-/* Animation utilities */
+/* ─── Smooth Transitions ─── */
 .transition-smooth {
   transition-property: background-color, border-color, color, box-shadow, transform;
-  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 0.2);
 }
 
-/* Health score colors */
-.health-healthy { color: #4ade80; }
-.health-atrisk { color: #fbbf24; }
-.health-critical { color: #f87171; }
+/* ─── Timeline Bar Animation ─── */
+@keyframes bar-fill {
+  from { width: 0; }
+  to { width: var(--tw-bar-width); }
+}
+.bar-fill {
+  animation: bar-fill 0.6s ease-out forwards;
+}
 
-/* Project status colors */
-.status-running { background: rgba(74, 222, 128, 0.15); color: #4ade80; }
-.status-queued { background: rgba(251, 191, 36, 0.15); color: #fbbf24; }
-.status-completed { background: rgba(96, 165, 250, 0.15); color: #60a5fa; }
-.status-delayed { background: rgba(248, 113, 113, 0.15); color: #f87171; }
-.status-onhold { background: rgba(139, 92, 246, 0.15); color: #8b5cf6; }
+/* ─── Pulse for Alerts ─── */
+@keyframes pulse-slow {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.6; }
+}
+.animate-pulse-slow {
+  animation: pulse-slow 3s ease-in-out infinite;
+}
+
+/* ─── Spin Animation ─── */
+@keyframes spin-slow-outer {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+.animate-spin-slow {
+  animation: spin-slow-outer 8s linear infinite;
+}
+
+/* ─── Bounce for Time Bombs ─── */
+@keyframes bounce-gentle {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.05); }
+}
+.animate-bounce-gentle {
+  animation: bounce-gentle 2s ease-in-out infinite;
+}
+
+/* ─── Gantt Bar Colors ─── */
+.gantt-critical { background: linear-gradient(90deg, #ef4444 0%, #dc2626 100%); }
+.gantt-normal { background: linear-gradient(90deg, #3b82f6 0%, #2563eb 100%); }
+.gantt-done { background: linear-gradient(90deg, #4ade80 0%, #22c55e 100%); }
+.gantt-onhold { background: linear-gradient(90deg, #8b5cf6 0%, #7c3aed 100%); }
+
+/* ─── Button Styles ─── */
+.btn-primary {
+  @apply px-6 py-3 rounded-xl font-medium text-white shadow-lg shadow-indigo-500/25 transition-all duration-200;
+  background: linear-gradient(135deg, #6366f1 0%, #4f46e5 100%);
+  border: 1px solid rgba(99, 102, 241, 0.3);
+}
+.btn-primary:hover {
+  @apply shadow-xl shadow-indigo-500/40 transform scale-105;
+}
+.btn-secondary {
+  @apply px-4 py-2 rounded-xl font-medium text-gray-300 transition-all duration-200;
+  background: rgba(31, 41, 55, 0.5);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+.btn-secondary:hover {
+  @apply text-white bg-gray-700/60;
+}

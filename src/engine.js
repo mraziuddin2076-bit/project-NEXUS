@@ -516,13 +516,52 @@ function analyzeAllProjects(projects, tasks, taskProgress) {
       tasks
     );
 
-    // Completion percentage
+    // Work breakdown: total effort vs actual effort done
+    const totalEffort = projectTasks.reduce((sum, t) => sum + (t.duration || 5), 0);
+    const doneEffort = projectTasks
+      .filter((t) => t.completed)
+      .reduce((sum, t) => sum + (t.duration || 5), 0);
+    // For partially complete tasks, estimate work done proportionally
+    projectTasks.forEach((t) => {
+      if (!t.completed && progressMap[t.id]) {
+        doneEffort += (t.duration || 5) * (progressMap[t.id] / 100);
+      }
+    });
+    const remainingEffort = Math.max(0, totalEffort - doneEffort);
+
+    // Timeline data for Gantt view
+    const startDate = parseDate(project.startDate) || today();
+    const deadline = parseDate(project.deadline);
+    const estCompletion = simulation.p80 || cp.projectFinish;
+
+    // Days remaining
+    const daysRemaining = estCompletion ? daysBetween(today(), estCompletion) : 0;
+    const daysFromStart = daysBetween(startDate, today());
+    const totalDuration = deadline ? daysBetween(startDate, deadline) : 0;
+
+    // Task timeline data (with CPM dates for Gantt)
+    const taskTimeline = projectTasks.map((t) => {
+      const tm = cp.taskMap[t.id];
+      return {
+        id: t.id,
+        name: t.name,
+        owner: t.owner,
+        duration: t.duration || 5,
+        risk: t.risk,
+        completed: t.completed,
+        progress: progressMap[t.id] || 0,
+        est: tm?.est || startDate,
+        eft: tm?.eft || addDays(startDate, t.duration || 5),
+        slack: tm?.slack || 0,
+        isCritical: cp.criticalPath.includes(t.id),
+        startDate: t.startDate || null,
+        dependsOn: t.dependsOn,
+      };
+    });
+
     const completedTasks = projectTasks.filter((t) => t.completed).length;
     const completionPct =
       projectTasks.length > 0 ? Math.round((completedTasks / projectTasks.length) * 100) : 0;
-
-    // Estimated completion date
-    const estCompletion = simulation.p80 || cp.projectFinish;
 
     results.push({
       project,
@@ -532,6 +571,13 @@ function analyzeAllProjects(projects, tasks, taskProgress) {
       criticalPath: cp.criticalPath,
       estimatedCompletion: formatDate(estCompletion),
       estimatedCompletionDate: estCompletion,
+      daysRemaining: daysRemaining > 0 ? daysRemaining : 0,
+      daysFromStart,
+      totalDuration,
+      totalEffort,
+      doneEffort: Math.round(doneEffort),
+      remainingEffort: Math.round(remainingEffort),
+      taskTimeline,
       simulation,
       delayInfo,
       timeBombs,
@@ -562,6 +608,28 @@ function analyzeAllProjects(projects, tasks, taskProgress) {
     queueOrder,
     now: today(),
   };
+}
+
+// ------------------------------------------------------------------
+// Timeline helper — returns tasks sorted by start date for Gantt rendering
+// ------------------------------------------------------------------
+function getTimelineForProject(projectData) {
+  const { taskTimeline, taskProgress: progress } = projectData;
+  if (!taskTimeline) return [];
+  // Sort by earliest start
+  return [...taskTimeline].sort((a, b) => {
+    const ta = a.est ? new Date(a.est) : new Date();
+    const tb = b.est ? new Date(b.est) : new Date();
+    return ta - tb;
+  });
+}
+
+// Timeline position helper — returns {startDay, duration} for Gantt bar rendering
+function timelinePosition(task, startDate) {
+  const taskStart = parseDate(task.startDate) || task.est || startDate;
+  const startDay = daysBetween(startDate, taskStart);
+  const duration = task.duration || 5;
+  return { startDay, duration };
 }
 
 function computeQueuePosition(projects, targetProject) {
@@ -604,6 +672,8 @@ export {
   computeTimeBombs,
   whatIfScenario,
   orderByPriority,
+  getTimelineForProject,
+  timelinePosition,
   parseDate,
   addDays,
   daysBetween,

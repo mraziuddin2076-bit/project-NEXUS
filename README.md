@@ -1,26 +1,46 @@
-# Project Watchtower
+# Project Watchtower — AI-Powered Multi-Project Monitoring Platform
 
-**AI-Powered Multi-Project Monitoring Platform** — runs entirely client-side, no external APIs required.
+**A fully local web app that monitors multiple projects, predicts delays, detects resource clashes, and simulates "what-if" scenarios — all running in your browser with zero external APIs.**
 
-## Features
-- **Multi-Project Tracking** — Dashboard for all projects with status badges, priority, health scores, and completion %
-- **AI Engine (Local)** — Monte Carlo simulation, Critical Path Method (CPM), resource clash detection
-- **Project Health Score (0-100)** — Real-time scoring based on deadline proximity, budget burn, velocity, and risk
-- **Delay Prediction & Reasons** — Auto-detects delays and identifies root causes (critical path stalls, dependency blocks, overallocation)
-- **Time-Bomb Warnings** — Animated countdowns for critical future risk dates
-- **What-If Simulator** — Adjust any task's duration/start date and see cascading impact on the project timeline
-- **Priority Queue Manager** — Auto-prioritized project queue with schedule simulation
-- **Resource Clash Detector** — Cross-project overallocation detection with recommendations
-- **Recovery Opportunity Finder** — Suggests non-critical task delays and reallocation strategies
+## 🌟 Key Features
+
+| Feature | What You Get |
+|---------|--------------|
+| **Project Dashboard** | Visual grid of all projects (Running / Queued / Completed / Delayed / On Hold) with health scores, completion %, and estimated finish dates |
+| **Health Score (0-100)** | Real-time scoring based on deadline proximity, budget burn, velocity, and risk factors |
+| **Delay Prediction** | Monte Carlo simulation (1000 trials) predicts completion confidence — with root-cause analysis |
+| **Time-Bomb Warnings** | Animated alerts for critical future dates when risks materialize |
+| **Resource Clash Detection** | Cross-project overallocation detection with actionable suggestions |
+| **What-If Simulator** | Drag sliders to delay tasks → see cascading impact on project timelines instantly |
+| **Priority Queue Manager** | Auto-prioritized project queue with schedule simulation |
+| **Task Gantt Timeline** | Visual timeline showing critical path, dependencies, and progress bars |
+| **Offline-First** | Works entirely from a single HTML file — no backend, no database, no API calls |
+
+## Screenshots
+
+### Dashboard — At-a-Glance Project Overview
+All projects displayed in a modern glassmorphic dashboard with completion %, health gauges, and countdown timers. Clicking any project opens its detailed view.
+
+### Project Detail — Full Metrics
+When you click a project you see:
+- **Schedule**: Start date, deadline, work done vs pending
+- **Timeline (Gantt)**: Visual task breakdown with critical path highlighting
+- **Completion Confidence**: Monte Carlo confidence intervals (50% / 80% / 95%)
+- **Delay Analysis**: Root causes of any delays
+- **Time-Bomb Warnings**: Animated alerts for critical dates
+- **Recovery Opportunities**: Suggestions to protect the deadline
+- **Team Allocation**: Per-member workload utilization
 
 ## Tech Stack
-- React 18 + Vite
-- TailwindCSS (glassmorphic dark design)
-- Pure JS engine — no external APIs, no backend, no database
+
+- **React 18** + **Vite** (blazing-fast dev server & build)
+- **TailwindCSS** with custom glassmorphic dark tech design system
+- **Pure JS AI Engine** — Monte Carlo simulation, Critical Path Method (CPM), heuristic-based risk analysis
+- **Zero external APIs** — all computation runs locally in the browser
 
 ## Quick Start
 
-### Option 1: Run Locally
+### Run Locally
 ```bash
 cd project-monitor
 npm install
@@ -28,31 +48,29 @@ npm run dev
 # Open http://localhost:5173
 ```
 
-### Option 2: Run the Production Build
+### Production Build
 ```bash
-cd project-monitor
-npm install
 npm run build
 npx serve dist -l 4173
 # Open http://localhost:4173
 ```
 
-### Option 3: Just Open the HTML File
+### Run from a Single File (Offline)
 ```bash
-cd project-monitor
 npm run build
-# Open dist/index.html directly in any browser
+# Open dist/index.html directly in any browser — works offline!
 ```
 
-## Deployment (GitHub Pages)
+## Live Demo
 
-1. Push this repository to GitHub
-2. Go to Settings → Pages
-3. Set source to `Deploy from a branch` → `gh-pages` branch
-4. Or use the automated script:
+https://mraziuddin2076-bit.github.io/project-NEXUS
+
+## Deploy to GitHub Pages
+
 ```bash
 npm run github-deploy
 ```
 
 ## License
+
 MIT
