@@ -7,11 +7,14 @@ import { WhatIfSimulator } from "./components/WhatIfSimulator.jsx";
 import { StatsBar } from "./components/StatsBar.jsx";
 import { ProjectDetail } from "./components/ProjectDetail.jsx";
 import { ResourceClashPanel } from "./components/ResourceClashPanel.jsx";
+import { HeroSection } from "./components/HeroSection.jsx";
+import { TrendChart } from "./components/TrendChart.jsx";
 
 function App() {
   const [analysis, setAnalysis] = useState(null);
   const [selectedProject, setSelectedProject] = useState(null);
   const [view, setView] = useState("dashboard");
+  const [showHero, setShowHero] = useState(true);
 
   useEffect(() => {
     const result = analyzeAllProjects(sampleProjects, sampleTasks, taskProgress);
@@ -91,6 +94,16 @@ function App() {
       </header>
 
       {/* Main Content */}
+      {/* Hero Section - shown on dashboard */}
+      {view === "dashboard" && showHero && (
+        <HeroSection analysis={analysis} onGetStarted={() => setShowHero(false)} />
+      )}
+
+      {/* Trend Chart - shown after hero */}
+      {view === "dashboard" && analysis && (
+        <TrendChart projects={analysis.projects} />
+      )}
+
       <main className="p-6 max-w-7xl mx-auto">
         {view === "dashboard" && (
           <>
